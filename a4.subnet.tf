@@ -11,6 +11,11 @@ resource "azurerm_subnet" "dbsubnet" {
   virtual_network_name = azurerm_virtual_network.vpc.name
   address_prefixes = var.db_subnet_address
 }
+resource "azurerm_network_security_group" "web_subnet_nsg" {
+  name = "${local.resoure_name_prefix}-nsg"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+}
 resource "azurerm_subnet_network_security_group_association" "web_subnet_nsg_associate" {
   subnet_id = azurerm_subnet.websubnet.id
   network_security_group_id = azurerm_network_security_group.web_subnet_nsg.id
