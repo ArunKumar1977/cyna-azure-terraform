@@ -1,19 +1,20 @@
 resource "azurerm_subnet" "websubnet" {
   name = "${local.resoure_name_prefix}-${var.web_subnet_name}"
   resource_group_name = azurerm_resource_group.rg.name #once the subnet get created it should be part of your resource group
-  virtual_network_name = azurerm_virtual_network.example.name #subnet should be part of your vnet also
+  virtual_network_name = azurerm_virtual_network.vpc.name #subnet should be part of your vnet also
   address_prefixes = var.web_subnet_address
   
 }
 resource "azurerm_subnet" "dbsubnet" {
   name =  "${local.resoure_name_prefix}-${var.db_subnet_name}"
   resource_group_name = azurerm_resource_group.rg.name 
-  virtual_network_name = azurerm_virtual_network.example.name
+  virtual_network_name = azurerm_virtual_network.vpc.name
   address_prefixes = var.db_subnet_address
 }
 resource "azurerm_subnet_network_security_group_association" "web_subnet_nsg_associate" {
   subnet_id = azurerm_subnet.websubnet.id
   network_security_group_id = azurerm_network_security_group.web_subnet_nsg.id
+  
 }
 locals {
   web_inbound_ports_maps = { #name is web_inbound_ports_maps
